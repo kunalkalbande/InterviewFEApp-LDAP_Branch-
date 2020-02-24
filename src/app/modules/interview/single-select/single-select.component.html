@@ -1,0 +1,26 @@
+<p>
+  <mat-form-field appearance="outline">
+    <mat-select
+      [formControl]="userCtrl"
+      placeholder="Enter Interviewer Name"
+      #singleSelect
+      panelClass="my-select-panel-class"
+    >
+      <mat-option>
+        <ngx-mat-select-search
+          [formControl]="userFilterCtrl"
+          placeholder="Search"
+          *ngFor="let user of filteredUsers | async"
+          (click)="getUserData(user.fullName)"
+        ></ngx-mat-select-search>
+      </mat-option>
+      <mat-option
+        *ngFor="let user of filteredUsers | async"
+        [value]="user.fullName"
+        (click)="getUserData(user.fullName)"
+      >
+        {{ user.fullName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</p>

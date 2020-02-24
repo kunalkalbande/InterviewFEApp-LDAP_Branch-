@@ -1,0 +1,196 @@
+<div class="container">
+  <div class="row">
+    <h3 mat-dialog-title>Edit Interview Details</h3>
+  </div>
+  <div class="row">
+    <form style="width: 100%;"  #formControl="ngForm">
+      <!--Textarea for demo purposes-->
+      <div class="row" style="display: none;">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="txtInterviewerName">Interviewe Id:</label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              #id
+              [(ngModel)]="data.id"
+              name="id"
+              id="id"
+              placeholder="Interviewee Name"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="txtInterviewerName">Interviewee Name:</label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <input
+              type="text"
+              #candidateName="ngModel"
+              class="form-control"
+              [(ngModel)]="data.candidateName"
+              name="candidateName"
+              id="candidateName"
+              placeholder="interviewee Name"
+              required
+              style="border-color: #c0ddff;"
+            />
+            <div
+              *ngIf="
+                candidateName.invalid &&
+                (candidateName.dirty || candidateName.touched)
+              "
+              class="messages text-danger"
+            >
+              <span>
+                Interviewee Name is required.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="txtInterviewerName">Interviewer Name:</label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-select
+                [formControl]="userCtrl"
+                placeholder="Enter Interviewer Name"
+                name="contactPerson"
+                id="contactPerson"
+                #contactPerson
+                panelClass="my-select-panel-class"
+                [(ngModel)]="data.contactPerson"
+              >
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="userFilterCtrl"
+                    placeholder="Search"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option
+                  *ngFor="let user of filteredUsers | async"
+                  [value]="user.DisplayName"
+                >
+                  {{ user.DisplayName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row"  style="margin-top: -4%;">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="txtInterviewerName">Date of Interview:</label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Choose a date"
+                name="dateofInterview"
+                [(ngModel)]= "data.dateofInterview"
+                #dateofInterview="ngModel"
+                required
+                readonly
+                (dateInput)="onUpdateDate()"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div
+              *ngIf="
+                dateofInterview.invalid &&
+                (dateofInterview.dirty || dateofInterview.touched)
+              "
+              class="messages text-danger"
+            >
+              <span>
+                Date of Interview is required.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: -3%;">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="txtInterviewerName">Mobile Number:</label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="data.mobileNo"
+              #mobNumber="ngModel"
+              name="MobileNumber"
+              id="MobileNumber"
+              maxlength="10"
+              placeholder="Mobile Number"
+              [pattern]="'^((\\+91-?)|0)?[0-9]{10}$'"
+              required
+              style="border-color: #c0ddff;"
+            />
+            <div
+              *ngIf="mobNumber.errors && (mobNumber.dirty || mobNumber.touched)"
+              [ngClass]="'messages text-danger'"
+            >
+              <div *ngIf="mobNumber.errors.pattern">
+                Mobile number not valid.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div mat-dialog-actions style="float: right;">
+        <button
+          mat-button
+          class="btn btn-primary btn-elevate"
+          [type]="submit"
+          [disabled]="!formControl.valid"
+          [mat-dialog-close]="1"
+          (click)="onEdit(data.id)"
+        >
+          Save
+        </button>
+        <button
+          mat-button
+          class="btn btn-danger"
+          (click)="onNoClick()"
+          tabindex="-1"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
